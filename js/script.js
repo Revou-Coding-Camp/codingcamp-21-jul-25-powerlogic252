@@ -29,9 +29,11 @@ function removeAllTask() {
 }
 
 function completeTask(index) {
-    /// Mark a task as completed
-  tasks[index].completed = true;
-  renderTasks();
+    // Tandai tugas sebagai selesai
+    tasks[index].completed = true;
+
+    // Render ulang daftar tugas
+    renderTasks();
 }
 
 function removeTask(index) {
@@ -62,7 +64,6 @@ document.addEventListener("click", function (e) {
 });
 
 function renderTasks() {
-    /// Render the task list based on the current filter
   const taskList = document.getElementById("todo-list");
   taskList.innerHTML = "";
 
@@ -76,23 +77,24 @@ function renderTasks() {
 
   // If no tasks match the filter, show a message
   if (filteredTasks.length === 0) {
-    taskList.innerHTML = `<tr><td colspan="4" class="empty">No task found</td></tr>`;
+    taskList.innerHTML = `<p class="text-center text-gray-500">No task found</p>`;
     return;
   }
 
   // Render the filtered tasks
   filteredTasks.forEach((task, index) => {
-    const row = `
-      <tr>
-        <td>${task.title}</td>
-        <td>${task.date}</td>
-        <td>${task.completed ? "Completed" : "Pending"}</td>
-        <td>
-          <button class="complete-btn px-[10px] py-[2px] bg-green-500 text-white rounded-md" onclick="completeTask(${index})">Complete</button>
-          <button class="remove-btn px-[10px] py-[2px] bg-red-500 text-white rounded-md" onclick="removeTask(${index})">Delete</button>
-        </td>
-      </tr>
+    const taskItem = document.createElement("li");
+    taskItem.innerHTML = `
+      <span>${task.title} - ${task.date}</span>
+      <div>
+        ${
+          !task.completed
+            ? `<button class="px-[10px] py-[2px] bg-green-500 text-white rounded-md" onclick="completeTask(${index})">Done</button>`
+            : ""
+        }
+        <button class="px-[10px] py-[2px] bg-red-500 text-white rounded-md" onclick="removeTask(${index})">Delete</button>
+      </div>
     `;
-    taskList.innerHTML += row;
+    taskList.appendChild(taskItem);
   });
 }
