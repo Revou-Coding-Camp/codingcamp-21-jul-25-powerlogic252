@@ -38,7 +38,18 @@
         <!--- list todo -->
         <section>
             <div class="action-container pt-[16px] pb-[16px]">
-                <button class="border px-[26px] py-[4px] rounded-[8px] bg-gray-500 text-white">Filter</button>
+                <div class="relative inline-block text-left">
+                    <button id="filter-btn" onclick="toggleFilter()" class="border px-[26px] py-[4px] rounded-[8px] bg-gray-500 text-white">
+                        Filter
+                    </button>
+                    <div id="filter-menu" class="hidden absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                        <ul class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="filter-btn">
+                            <li><button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="setFilter('all')">All Tasks</button></li>
+                            <li><button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="setFilter('pending')">Pending</button></li>
+                            <li><button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onclick="setFilter('completed')">Completed</button></li>
+                        </ul>
+                    </div>
+                </div>
                 <button type="button" class="border px-[26px] py-[4px] rounded-[8px] bg-red-500 text-white" onclick="removeAllTask();">Delete all</button>
             </div>
 
@@ -48,7 +59,7 @@
                 </h2>
             </header>
 
-            <div id="todo-list">
+            <div id="todo-list" class="max-h-[300px] overflow-y-auto border border-gray-300 rounded-md p-4">
                 <p>No tasks available</p>
             </div>
         </section>

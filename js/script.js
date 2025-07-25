@@ -1,60 +1,98 @@
-// File: js/script.js
-// This is a simple Todo application script
 let tasks = [];
+let currentFilter = "all";
 
 function addTask() {
-    //function to add a task
-    const taskInput = document.getElementById('todo-input');
-    const dateInput = document.getElementById('date-input');
+  const taskInput = document.getElementById("todo-input");
+  const dateInput = document.getElementById("date-input");
 
-    // Check if the task and date inputs are not empty
-    if (taskInput.value === "" || dateInput.value === "") {
-        // Alert the user to enter both task and date
-        alert("Please enter a task and a date.");
-    } else {
-        // Add the task to the tasks array
-        tasks.push({
-            title: taskInput.value,
-            date: dateInput.value,
-            completed: false,
-        });
+  if (taskInput.value.trim() === "" || dateInput.value === "") {
+    alert("Please enter a task and a date.");
+    return;
+  }
 
-        renderTasks(); // Call renderTasks to update the UI
-    }
+  tasks.push({
+    title: taskInput.value.trim(),
+    date: dateInput.value,
+    completed: false,
+  });
 
+  taskInput.value = "";
+  dateInput.value = "";
+
+  renderTasks();
 }
-
 
 function removeAllTask() {
-    //function to remove a task
-    tasks = []; // Clear the tasks array
-
-    renderTasks(); 
-}
-
-function toggleFilter() {
-    //function to toggle filter
+    /// Remove all tasks from the list
+  tasks = [];
+  renderTasks();
 }
 
 function completeTask(index) {
-    //function to mark a task as completed
-    tasks[index].completed = true;
+    /// Mark a task as completed
+  tasks[index].completed = true;
+  renderTasks();
 }
 
-function renderTasks() {
-    // Function to render tasks on the page
-    const taskList = document.getElementById("todo-list");
-    taskList.innerHTML = ""; // Clear the current list
+function removeTask(index) {
+    /// Remove a task from the list
+  tasks.splice(index, 1);
+  renderTasks();
+}
 
-    tasks.forEach((task, index) => {
-        taskList.innerHTML += `
-        <li class="todo-item flex justify-between items-center bg-white p-4 mb-2">
-                    <span>${task.title}</span>
-                    <div>
-                        <button type="button" class="px-[10px] py-[2px] bg-green-500 text-white rounded-md" onclick="completeTask(${index});">Complete</button>
-                        <button class="px-[10px] py-[2px] bg-red-500 text-white rounded-md">Delete</button>
-                    </div>
-                </li>
-        `;
-    });
+function toggleFilter() {
+  const menu = document.getElementById("filter-menu");
+  menu.classList.toggle("hidden"); // Menampilkan atau menyembunyikan dropdown
+}
+
+function setFilter(type) {
+  currentFilter = type; // Set the current filter
+  document.getElementById("filter-menu").classList.add("hidden"); // Hide the dropdown
+  renderTasks(); // Reload the task list based on the selected filter
+}
+
+document.addEventListener("click", function (e) {
+  const btn = document.getElementById("filter-btn");
+  const menu = document.getElementById("filter-menu");
+
+  // Tutup dropdown jika klik di luar tombol atau menu
+  if (!btn.contains(e.target) && !menu.contains(e.target)) {
+    menu.classList.add("hidden");
+  }
+});
+
+function renderTasks() {
+    /// Render the task list based on the current filter
+  const taskList = document.getElementById("todo-list");
+  taskList.innerHTML = "";
+
+  // Filter tasks based on the current filter
+  let filteredTasks = tasks;
+  if (currentFilter === "pending") {
+    filteredTasks = tasks.filter((task) => !task.completed); // Only pending tasks
+  } else if (currentFilter === "completed") {
+    filteredTasks = tasks.filter((task) => task.completed); // Only completed tasks
+  }
+
+  // If no tasks match the filter, show a message
+  if (filteredTasks.length === 0) {
+    taskList.innerHTML = `<tr><td colspan="4" class="empty">No task found</td></tr>`;
+    return;
+  }
+
+  // Render the filtered tasks
+  filteredTasks.forEach((task, index) => {
+    const row = `
+      <tr>
+        <td>${task.title}</td>
+        <td>${task.date}</td>
+        <td>${task.completed ? "Completed" : "Pending"}</td>
+        <td>
+          <button class="complete-btn px-[10px] py-[2px] bg-green-500 text-white rounded-md" onclick="completeTask(${index})">Complete</button>
+          <button class="remove-btn px-[10px] py-[2px] bg-red-500 text-white rounded-md" onclick="removeTask(${index})">Delete</button>
+        </td>
+      </tr>
+    `;
+    taskList.innerHTML += row;
+  });
 }
