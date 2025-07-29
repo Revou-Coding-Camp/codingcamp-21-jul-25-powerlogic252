@@ -7,8 +7,8 @@ main {
 body {
     margin: 0;
     font-family: monospace;
-    background-color: #937ea3;
-    color: #e9bbe7;
+    background-color: #450476;
+    color: #6a00ff;
     font-weight:550;
     display: flex;
     justify-content: center;
@@ -17,7 +17,7 @@ body {
     padding: 40px 0;
     }
 form {
-    background-color: rgb(194, 161, 180);
+    background-color: rgb(245, 10, 163);
     padding: 16px;
     border-radius: 8px;
     display: flex;
@@ -41,15 +41,15 @@ form {
 
 #todo-list {
     display: flex;
-    flex-direction: column; /* Atur item agar tampil secara vertikal */
-    gap: 10px; /* Tambahkan jarak antar item */
+    flex-direction: column;
+    gap: 10px;
     height: 200px;
     overflow-y: auto;
     padding: 10px;
-    border: 1px solid #e5e7eb;
+    border: 5px solid #000000;
     border-radius: 8px;
-    background-color: #fff; /* Tambahkan warna latar belakang */
-}
+    background-color: #b04949;
+    box-shadow: 10px 10px 10px rgba(226, 8, 250, 0.695);}
 
 li {
     list-style: none; /* Hilangkan bullet pada item */
